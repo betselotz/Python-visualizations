@@ -787,7 +787,7 @@ plt.show()
 
 ## 📘 What this does
 
-- `df["Age"].plot(kind="hist")` → creates a histogram directly using Pandas without Seaborn  
+- `df["Age"].plot(kind="hist")` → creates a histogram directly using Pandas only 
 - `bins=10` → splits the data into 10 age ranges  
 - `color="orange"` → changes the bar color to orange  
 - `edgecolor="black"` → adds black borders to bars for better visibility  
@@ -796,10 +796,9 @@ plt.show()
 
 ---
 
-## ❌ Common mistakes beginners make
+## ❌ Common mistakes
 
-- Forgetting that `Age` must be numeric before plotting  
-- Confusing Pandas plotting with Seaborn plotting  
+- Forgetting that `Age` must be numeric before plotting   
 - Missing `plt.show()` so nothing appears  
 - Not adding labels or title, making the chart unclear  
 
@@ -823,6 +822,7 @@ sns.histplot(df["Age"])
 # Always put this at the very end to show the plot
 plt.show()
 ```
+
 <details>
 
 <summary>📊 Histogram Code — Line-by-Line Explanation</summary>
@@ -901,7 +901,7 @@ plt.show()
 
 ---
 
-## ❌ Common mistakes beginners make
+## ❌ Common mistakes
 
 - Forgetting to check if `Age` is numeric before plotting  
 - Missing `plt.show()` so the graph does not appear  
@@ -963,6 +963,31 @@ Use `kde=True` when you want to see the **overall trend shape** of your data, no
 </details>
 ---
 
+### 🎨 2.3. Adding Counts and Percentages on Top of Bars
+
+```python
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# 1. Set the size of the plot window
+plt.figure(figsize=(8, 5))
+
+# 2. Draw the histogram and save it to a variable named 'ax'
+ax = sns.histplot(data=df, x="Age", bins=10, color="teal", edgecolor="black")
+
+# 3. Tell Python to automatically add labels to the bars
+ax.bar_label(ax.containers[0], fmt=lambda x: f"{int(x)} ({x/len(df)*100:.1f}%)" if x > 0 else "")
+
+# 4. Make extra room at the top of the chart so labels don't get cut off
+plt.ylim(0, ax.get_ylim()[1] * 1.1)
+
+# 5. Add text labels
+plt.title("Age Distribution with Percentages")
+plt.xlabel("Age (Years)")
+plt.ylabel("Patient Count")
+
+plt.show()
+```
 
 
 

@@ -39,10 +39,7 @@ This command installs all required Python libraries for data analysis and visual
 
 ## ❌ Common mistakes beginners make
 
-- Missing `!` when running inside Jupyter (`!pip install ...`)  
-- Not restarting the kernel after installation  
-
----
+- Missing `!` when running inside Jupyter (`!pip install ...`)
 
 </details>
 
@@ -69,16 +66,7 @@ Loads all tools needed for:
 
 ---
 
-## ❌ Common mistakes beginners make
-
-- Forgetting to run the import cell first  
-- Typing wrong package names (`panda` instead of `pandas`)  
-- Missing Biopython installation in notebook kernel  
-- Running notebook cells out of order  
-
----
-
-## 💡 Tip
+## 💡 Tip: 
 
 Always run this cell before anything else.
 
@@ -115,7 +103,7 @@ df.head()
 
 ---
 
-## ❌ Common mistakes beginners make
+## ❌ Common mistakes 
 
 - File not found error because `metadata.csv` is not in the working directory  
 - Typing the wrong filename or missing `.csv` extension  
@@ -133,7 +121,6 @@ df.head()
 ```
 
 </details>
-
 
 ## 1.2. Check Table Size and Columns
 ```python
@@ -195,7 +182,6 @@ Human typists often accidentally leave blank spaces in spreadsheets (for example
 
 This helps ensure that Python treats values consistently without errors caused by invisible spaces.
 
-
 ---
 
 ## 💡 Tip
@@ -224,7 +210,7 @@ This helps identify columns that may need cleaning before analysis or visualizat
 
 ---
 
-## ❌ Common mistakes beginners make
+## ❌ Common mistakes 
 
 - Assuming datasets are complete without checking for missing values  
 - Confusing empty strings (`""`) with true missing values (`NaN`)  
@@ -262,13 +248,12 @@ These functions are used to quickly understand how data is distributed across ca
 
 ---
 
-## ❌ Common mistakes beginners make
+## ❌ Common mistakes
 
 - Forgetting that `value_counts()` automatically sorts results  
 - Misspelling column names (`Smoking` vs `smoking`)  
 - Not noticing inconsistent labels (e.g., `Yes`, `yes`, `YES`)  
 - Assuming categories are already clean without checking  
-
 ---
 
 ## 💡 Tip
@@ -303,7 +288,7 @@ This is useful when you want to focus only on important variables and simplify y
 
 ---
 
-## ❌ Common mistakes beginners make
+## ❌ Common mistakes
 
 - Forgetting double brackets `[[ ]]` when selecting multiple columns  
 - Misspelling column names (`region` vs `Region`)  
@@ -342,7 +327,7 @@ This helps you focus on a specific subgroup of patients for analysis.
 
 ---
 
-## ❌ Common mistakes beginners make
+## ❌ Common mistakes
 
 - Forgetting to ensure `Age` is numeric before filtering  
 - Using incorrect comparison operators (`=` instead of `>`)  
@@ -379,7 +364,7 @@ Sometimes numbers get imported as "text" instead of real numeric values. This ha
 
 ---
 
-## ❌ Common mistakes beginners make
+## ❌ Common mistakes
 
 - Trying to calculate averages or build plots while the column is still stored as text instead of numbers.  
 
@@ -421,7 +406,7 @@ This helps standardize column names so analysis and plotting work correctly.
 
 ---
 
-## ❌ Common mistakes beginners make
+## ❌ Common mistakes
 
 - Forgetting to assign back to `df` (so changes are not saved)  
 - Misspelling column names in the rename dictionary  
@@ -435,6 +420,7 @@ This helps standardize column names so analysis and plotting work correctly.
 Always print `df.columns` after renaming to confirm everything was updated correctly.
 
 </details>
+
 ## 1.10. List Unique Categories
 ```python
 # 1. See all unique categories inside the 'Sex' column

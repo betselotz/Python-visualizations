@@ -221,8 +221,6 @@ Confusing `len(df)` with `df.size`.
 </details>
 
 
-
-
 ## 1.3. Remove Hidden Blank Spaces
 ```python
 # 1. Clean the column names (remove hidden spaces at the start/end)
@@ -264,7 +262,8 @@ If Python says a column doesn't exist, always check your raw spreadsheet for hid
 </details>
 
 
-## 1.4 Bulk Cleaning Text Across Multiple Columns
+## More techniques
+### Bulk Cleaning Text Across Multiple Columns
 ```python
 # 1. List all the text columns you want to strip of hidden spaces
 text_columns = ["TwoWeeksCough", "ChestPain", "LowFeverGrade", "NightSweating", "AppetiteLoss", "WeightLoss", "CultureResult"]
@@ -292,6 +291,34 @@ Using loops to clean multiple metadata columns:
 - Saves screen space
 - Prevents copy-paste typing errors
 - Makes your bioinformatics code look professional and highly reproducible
+
+</details>
+
+### Cleaning Invisible Spaces from the Whole Table at Once (df.map())
+```python
+# 1. Apply the text-stripping eraser to every cell in the entire table using the modern map() function
+# (Only targets cells that are read as text strings)
+df = df.map(lambda x: x.strip() if isinstance(x, str) else x)
+
+# 2. Print a success message
+print("The entire dataset has been successfully stripped of hidden spaces!")
+```
+<details>
+<summary>📘 What this does</summary>
+
+`df.map(...)` loops through every single cell across every row and column in your spreadsheet automatically behind the scenes.
+
+`lambda x: x.strip() if isinstance(x, str) else x` examines each individual data cell (`x`):
+
+- If the cell contains a text string (`isinstance(x, str)`), it applies `.strip()` to remove blank spaces from both ends.
+- If the cell contains a number (e.g., Age or MonthsStay), it leaves it unchanged so the code does not crash.
+
+❌ Common mistakes 
+
+Using `.map()` on an individual column vs. the whole table:
+
+- If used on a single column (e.g., `df["Sex"].map(...)`), it transforms only that column.
+- If used on the whole DataFrame (e.g., `df.map(...)`), it applies the transformation across every cell in the grid (in newer Pandas versions).
 
 </details>
 

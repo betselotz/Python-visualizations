@@ -178,8 +178,6 @@ print(df.dtypes)
 - - `int64`: Whole integers (for example, Age if there are no decimals)
 - `float64`: Continuous numbers with decimals (for example, sequence quality scores or missing values converted to numbers)
 - `object`: Text strings or mixed data types (for example, Sex, Region, CultureResult)
-
-
 ---
 
 ## ❌ Common mistakes beginners make
@@ -208,9 +206,6 @@ print("Total number of patients in this dataset:", total_rows)
 
 It is a built-in Python tool that works very quickly even on massive genomic metadata datasets.
 
-</details>
-
-<details>
 <summary>❌ Common mistakes beginners make</summary>
 
 Confusing `len(df)` with `df.size`.
@@ -248,7 +243,6 @@ Human typists often accidentally leave blank spaces in spreadsheets (for example
 - `df.columns.str.strip()` → removes hidden spaces from all column names (e.g., `"Sex "` → `"Sex"`)  
 - `df["Sex"].str.strip()` → removes extra spaces from values in the `Sex` column (e.g., `"Male "` → `"Male"`)  
 - `df["CultureResult"].str.strip()` → removes extra spaces from values in the `CultureResult` column  
-
 ---
 
 This helps ensure that Python treats values consistently without errors caused by invisible spaces.
@@ -281,9 +275,6 @@ print("All listed columns successfully stripped of trailing spaces!")
 
 `df[col] = df[col].str.strip()` temporarily targets that specific column and removes invisible spaces from the edges of its text fields.
 
-</details>
-
-<details>
 <summary>💡 Tip</summary>
 
 Using loops to clean multiple metadata columns:

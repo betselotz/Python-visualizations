@@ -991,6 +991,27 @@ plt.show()
 
 ###  2.5. Save the files in svg and png file
 ```python
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# 1. Set the size of the plot window
+plt.figure(figsize=(8, 5))
+
+# 2. Draw the histogram
+ax = sns.histplot(data=df, x="Age", bins=10, color="teal", edgecolor="black")
+
+# 3. Add labels on top of the bars
+ax.bar_label(ax.containers[0], fmt=lambda x: f"{int(x)} ({x/len(df)*100:.1f}%)" if x > 0 else "")
+
+# 4. Make extra room at the top for labels
+plt.ylim(0, ax.get_ylim()[1] * 1.1)
+
+# 5. Add text titles
+plt.title("Age Distribution with Percentages")
+plt.xlabel("Age (Years)")
+plt.ylabel("Patient Count")
+
+# 6. SAVE THE FILE IN BOTH FORMATS
 # dpi=300 makes the PNG sharp and high-resolution for reports
 plt.savefig("age_distribution.png", dpi=300, bbox_inches="tight")
 plt.savefig("age_distribution.svg", bbox_inches="tight")

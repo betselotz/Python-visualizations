@@ -303,6 +303,33 @@ Creating a smaller dataset helps make analysis faster and easier to manage, espe
 
 </details>
 
+## Summary Statistics for Numbers (Quick Overview)
+```python
+# 1. Look at the summary statistics for all numeric columns
+df.describe()
+```
+<details>
+<summary>📘 What this does</summary>
+
+`df.describe()` automatically finds all numerical columns and calculates:
+
+- **count**: Total number of non-empty cells.
+- **mean**: The average value.
+- **std**: Standard deviation (how spread out the values are).
+- **min / max**: The lowest and highest values in the dataset.
+- **25%, 50%, 75%**: Percentiles (the 50% mark is your absolute median).
+
+</details>
+
+<details>
+<summary>❌ Common mistakes beginners make</summary>
+
+Running this before converting data types:  
+If your `"Age"` column is still being read as text/strings, `df.describe()` will completely ignore it.
+
+Always run `pd.to_numeric()` first!
+
+</details>
 ## 1.7 Filtering Rows (Finding Specific Patients)
 
 ```python
@@ -446,7 +473,7 @@ This helps you detect inconsistencies like:
 
 ---
 
-## ❌ Common mistakes beginners make
+## ❌ Common mistakes
 
 - Skipping this check and later getting duplicate categories in plots  
 - Assuming data is clean without verifying spelling and formatting  

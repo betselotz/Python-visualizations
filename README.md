@@ -771,9 +771,9 @@ Always run `.unique()` before visualization to ensure your categories are clean 
 ---
 
 
-# 📊 3. AGE DISTRIBUTION 
+# 📊 2. AGE DISTRIBUTION 
 ## Approach A: The Quick & Simple "Pandas-Only" Way
-### 3.1. The Built-in Pandas Histogram Shortcut
+### 2.1. The Built-in Pandas Histogram Shortcut
 ```python
 # Generate a quick histogram using ONLY pandas
 df["Age"].plot(kind="hist", bins=10, color="orange", edgecolor="black")
@@ -812,7 +812,7 @@ Pandas plotting is useful for quick and simple visualizations, but Seaborn is be
 </details>
 
 ## Approach B: The Step-by-Step Breakdown matplotlib and seaborn
-### 3.1. Draw the Base Histogram
+### 2.1. Draw the Base Histogram
 ```python
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -874,7 +874,7 @@ Without it, the graph may not appear in some environments (especially scripts or
 
 </details>
 
-### 3.2. Adding Titles and Axis Labels
+### 2.2. Adding Titles and Axis Labels
 ```python
 # 1. Draw the histogram bars
 sns.histplot(df["Age"])
@@ -916,7 +916,7 @@ Always label your plots clearly so others can understand your results instantly.
 
 </details>
 
-### 🎨 3.3. Customizing Bins, Colors, and Trend Lines
+### 🎨 2.3. Customizing Bins, Colors, and Trend Lines
 ```python
 # Make the chart larger, change color, and add a smooth trend line (kde)
 sns.histplot(df["Age"], bins=10, color="teal", kde=True)
@@ -962,7 +962,6 @@ Use `kde=True` when you want to see the **overall trend shape** of your data, no
 
 </details>
 ---
-
 
 
 

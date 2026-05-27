@@ -313,7 +313,7 @@ Using `.map()` on an individual column vs. the whole table:
 
 </details>
 
-## 1.5. Count Missing (Empty) Cells
+## 1.4. Count Missing (Empty) Cells
 
 ```python
 # 1. Count how many empty/blank cells are in each column
@@ -348,9 +348,59 @@ Always check for missing values early in your workflow before performing analysi
 
 </details>
 
+### more codes 
+View Rows with Missing Values `(df.isna())`
+Counting missing cells with `.sum()` tells you how many exist, but sometimes scientists need to look at the exact rows where data is missing to understand why it wasn't recorded.
+
+```python
+# 1. Filter out and view only the rows where the 'zone' column is missing/empty
+missing_zones = df[df["zone"].isna()]
+
+# 2. Display the rows with missing data
+missing_zones
+```
+<details>
+<summary>📘 What this does</summary>
+
+`df["zone"].isna()` scans every cell in the `zone` column and flags it as `True` if it is empty (NaN) and `False` if it has data.
+
+`df[...]` then uses those Boolean flags like a filter window, showing only the rows where the condition is `True`—in this case, rows where the `zone` value is missing.
+
+</details>
+
+Safely Drop Rows with Missing Data `(df.dropna())`
+If critical clinical data (like `CultureResult`) is missing for a sample, you might not be able to use it in your analysis. You can drop rows with empty cells, but you must teach students how to do it safely so they don't erase their entire spreadsheet.
+
+```python
+# 1. Safely remove rows ONLY if they are missing critical data in 'CultureResult'
+df_cleaned = df.dropna(subset=["CultureResult"])
+
+# 2. Compare the old size vs new size to see how many rows were dropped
+print("Original size:", df.shape)
+print("Size after dropping missing values:", df_cleaned.shape)
+```
+
+<details>
+<summary>📘 What this does</summary>
+
+`df.dropna(subset=["CultureResult"])` removes rows only if the missing value is inside the specified column(s).
+
+This means it specifically checks `CultureResult`, and only deletes rows where that column is empty, while keeping rows that may have missing data in other columns.
+
+<summary>❌ Common mistakes </summary>
+
+Running `df.dropna()` without a `subset`:
+
+If a beginner just types `df.dropna()`, Pandas deletes an entire row if even one single cell in any column is empty.
+
+For example, if a patient is only missing a zone name, a plain `dropna()` can remove all their other valuable clinical data.
+
+Using `subset=["CultureResult"]` makes the cleaning much safer and more controlled.
+
+</details>
 
 
-## 1.6 Handling Empty/Missing Cells (fillna)
+## 1.5 Handling Empty/Missing Cells (fillna)
 
 ```python
 # 1. Check how many missing values are in the 'zone' column
@@ -370,9 +420,6 @@ print("Missing after:", df["zone"].isnull().sum())
 
 This prevents errors when downstream scripts expect every cell to contain text.
 
-</details>
-
-<details>
 <summary>❌ Common mistakes beginners make</summary>
 
 Dropping everything by accident:

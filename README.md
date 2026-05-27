@@ -89,6 +89,8 @@ df = pd.read_csv("metadata.csv")
 
 # 2. Show the first few lines to make sure it looks correct
 df.head()
+# 3. View the last 5 rows of the dataset
+df.tail()
 ```
 
 <details>
@@ -99,7 +101,8 @@ df.head()
 
 - `import pandas as pd` → imports the Pandas library for handling tabular data  
 - `pd.read_csv("metadata.csv")` → reads the CSV file and loads it into a DataFrame called `df`  
-- `df.head()` → displays the first 5 rows of the dataset to quickly check if the file loaded correctly  
+- `df.head()` → displays the first 5 rows of the dataset to quickly check if the file loaded correctly
+- `df.tail()` → prints out the final 5 entries of the DataFrame.
 
 ---
 
@@ -114,13 +117,43 @@ df.head()
 
 ## 💡 Tip
 
-Always run:
+Always run at least :
 
 ```python
 df.head()
 ```
 
 </details>
+
+### more techniques
+```python
+# to view a specific number of rows from the bottom (for example, the last 10 rows), just put the number inside the parentheses:
+df.tail(10)
+```
+Sometimes, checking only the top (head) or the bottom (tail) isn't enough because a data entry mistake might be hiding right in the middle of the spreadsheet. Taking a random sample lets you spot-check the data blindly.
+
+```python
+# 1. Look at 5 completely random rows from your table
+df.sample(5)
+```
+The Quick Structural Health Check (df.info()),  It acts like an X-ray scan of your entire dataset, telling you your table's structure, storage size, data types, and missing cells all in one glance.
+```python
+# 1. View a complete structural summary of the dataset
+df.info()
+```
+<details>
+<summary>📘 What this does</summary>
+
+`df.info()` prints out a technical summary sheet showing:
+
+- The exact total number of entries (rows)
+- A clean list of all column headers
+- The number of non-null (not empty) cells in each column
+- The data types (numbers vs. text objects)
+- How much computer memory (RAM) the table is using
+
+</details>
+
 
 ## 1.2. Check Table Size and Columns
 ```python
@@ -157,6 +190,37 @@ print(df.dtypes)
 ---
 
 </details>
+
+### more techniques
+Check the Total Number of Rows Only (len()): While df.shape gives both rows and columns together as a pair, sometimes you only need the total number of entries (like the total number of patients) as a single integer for a report or loop.
+
+```python
+# 1. Get just the total number of rows (patients) in the table
+total_rows = len(df)
+
+# 2. Print out the number in a clean message
+print("Total number of patients in this dataset:", total_rows)
+```
+<details>
+<summary>📘 What this does</summary>
+
+`len(df)` acts like a counter that tells you exactly how many horizontal rows are in your DataFrame.
+
+It is a built-in Python tool that works very quickly even on massive genomic metadata datasets.
+
+</details>
+
+<details>
+<summary>❌ Common mistakes beginners make</summary>
+
+Confusing `len(df)` with `df.size`.
+
+- `len(df)` counts the rows (for example, 88 rows)
+- `df.size` multiplies rows by columns to give the total number of individual data cells in the entire dataset, which is usually not what a beginner wants
+
+</details>
+
+
 
 
 ## 1.3. Remove Hidden Blank Spaces

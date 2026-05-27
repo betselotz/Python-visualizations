@@ -611,7 +611,7 @@ Always run `.unique()` before and after to verify the changes.
 
 
 
-## 1.7 Filtering Rows (Finding Specific Patients)
+## 1.11 Filtering Rows (Finding Specific Patients)
 
 ```python
 # 1. Filter out and view only patients who are older than 30 years old
@@ -650,7 +650,7 @@ Filtering is one of the most powerful tools in data analysis—always double-che
 
 </details>
 
-## 1.8. Convert Age Into Numbers
+## 1.12. Convert Age Into Numbers
 
 ```python
 # 1. Force the 'Age' column to be read as math numbers
@@ -687,7 +687,7 @@ df["Age"].dtype
 before doing statistical analysis.
 </details>
 
-## 1.9. Renaming Columns for Cleanliness
+## 1.13. Renaming Columns for Cleanliness
 ```python
 # 1. Fix capitalization and remove question marks from column headers
 df = df.rename(columns={"region": "Region", "ChewKhat?": "ChewKhat"})
@@ -729,7 +729,7 @@ Always print `df.columns` after renaming to confirm everything was updated corre
 
 </details>
 
-## 1.10. List Unique Categories
+## 1.14. List Unique Categories
 ```python
 # 1. See all unique categories inside the 'Sex' column
 print(df["Sex"].unique())

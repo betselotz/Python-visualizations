@@ -775,6 +775,7 @@ Always run `.unique()` before visualization to ensure your categories are clean 
 ## Approach A: The Quick & Simple "Pandas-Only" Way
 ### 2.1. The Built-in Pandas Histogram Shortcut
 ```python
+import pandas as pd
 # Generate a quick histogram using ONLY pandas
 df["Age"].plot(kind="hist", bins=10, color="orange", edgecolor="black")
 

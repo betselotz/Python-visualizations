@@ -963,7 +963,7 @@ Use `kde=True` when you want to see the **overall trend shape** of your data, no
 </details>
 ---
 
-### 🎨 2.3. Adding Counts and Percentages on Top of Bars
+###  2.4. Adding Counts and Percentages on Top of Bars
 
 ```python
 import matplotlib.pyplot as plt
@@ -989,7 +989,14 @@ plt.ylabel("Patient Count")
 plt.show()
 ```
 
+###  2.5. Save the files in svg and png file
+```python
+# dpi=300 makes the PNG sharp and high-resolution for reports
+plt.savefig("age_distribution.png", dpi=300, bbox_inches="tight")
+plt.savefig("age_distribution.svg", bbox_inches="tight")
 
+plt.show()
+```
 
 
 # 📊 4. SEX DISTRIBUTION (BAR CHART)

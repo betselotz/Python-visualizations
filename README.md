@@ -78,7 +78,7 @@ Always run this cell before anything else.
 
 ---
 
-## 📂 1. Load Your Metadata (Real Dataset)
+## 📂 1.1. Load Your Metadata (Real Dataset)
 Before creating plots, data must be properly imported, inspected, and sanitized. Hand-collected clinical datasets often contain hidden issues like trailing spaces or incorrect data types.
 
 ```
@@ -129,6 +129,9 @@ print(df.shape)
 
 # 2. See a simple list of all your column titles
 print(df.columns)
+
+# 3. Ask Python to print out the data type of every single column
+print(df.dtypes)
 ```
 <details>
 
@@ -137,7 +140,12 @@ print(df.columns)
 ## 📘 What this does
 
 - `df.shape` acts like a tape measure. It tells you exactly how many patients (rows) and characteristics (columns) are in your file.  
-- `df.columns` prints out a clean list of every column header so you know exactly how they are spelled.  
+- `df.columns` prints out a clean list of every column header so you know exactly how they are spelled.
+- `print(df.dtypes)`gives
+- - `int64`: Whole integers (for example, Age if there are no decimals)
+- `float64`: Continuous numbers with decimals (for example, sequence quality scores or missing values converted to numbers)
+- `object`: Text strings or mixed data types (for example, Sex, Region, CultureResult)
+
 
 ---
 
@@ -149,6 +157,7 @@ print(df.columns)
 ---
 
 </details>
+
 
 ## 1.3. Remove Hidden Blank Spaces
 ```python
@@ -190,7 +199,39 @@ If Python says a column doesn't exist, always check your raw spreadsheet for hid
 
 </details>
 
-## 1.4. Count Missing (Empty) Cells
+
+## 1.4 Bulk Cleaning Text Across Multiple Columns
+```python
+# 1. List all the text columns you want to strip of hidden spaces
+text_columns = ["TwoWeeksCough", "ChestPain", "LowFeverGrade", "NightSweating", "AppetiteLoss", "WeightLoss", "CultureResult"]
+
+# 2. Loop through each column name and strip whitespace automatically
+for col in text_columns:
+    df[col] = df[col].str.strip()
+
+print("All listed columns successfully stripped of trailing spaces!")
+```
+<details>
+<summary>📘 What this does</summary>
+
+`for col in text_columns:` takes one column name from your list at a time.
+
+`df[col] = df[col].str.strip()` temporarily targets that specific column and removes invisible spaces from the edges of its text fields.
+
+</details>
+
+<details>
+<summary>💡 Tip</summary>
+
+Using loops to clean multiple metadata columns:
+
+- Saves screen space
+- Prevents copy-paste typing errors
+- Makes your bioinformatics code look professional and highly reproducible
+
+</details>
+
+## 1.5. Count Missing (Empty) Cells
 
 ```python
 # 1. Count how many empty/blank cells are in each column
@@ -225,7 +266,46 @@ Always check for missing values early in your workflow before performing analysi
 
 </details>
 
-## 1.5 Count How Many Times Each Category Appears
+
+
+## 1.6 Handling Empty/Missing Cells (fillna)
+
+```python
+# 1. Check how many missing values are in the 'zone' column
+print("Missing before:", df["zone"].isnull().sum())
+
+# 2. Fill empty 'zone' cells with the text "Unknown" so the table is complete
+df["zone"] = df["zone"].fillna("Unknown")
+
+# 3. Double check to ensure 0 missing values remain in that column
+print("Missing after:", df["zone"].isnull().sum())
+```
+
+<details>
+<summary>📘 What this does</summary>
+
+`.fillna("Unknown")` looks at every cell containing `NaN` (Not a Number / empty) within that specific column and replaces it with the word `"Unknown"`.
+
+This prevents errors when downstream scripts expect every cell to contain text.
+
+</details>
+
+<details>
+<summary>❌ Common mistakes beginners make</summary>
+
+Dropping everything by accident:
+
+Beginners often use `df.dropna()`, which deletes the entire row if even one single cell is empty.
+
+For example, if a patient is missing just a zone name, using `dropna()` throws away all their other valuable data.
+
+- Filling missing cells with `"Unknown"` or `"Missing"` is usually much safer.
+
+</details>
+
+
+
+## 1.6 Count How Many Times Each Category Appears
 ```python
 # 1. Count how many patients come from each region
 print(df["region"].value_counts())
@@ -266,7 +346,7 @@ If you want to see these counts as percentages instead of raw numbers, add norma
 ```python
 df["region"].value_counts(normalize=True) * 100
 ```
-## 1.6  Viewing Only Specific Columns
+## 1.7  Viewing Only Specific Columns
 ```python
 # 1. Choose a few specific columns to look at
 mini_df = df[["Age", "Sex", "region"]]
@@ -303,7 +383,7 @@ Creating a smaller dataset helps make analysis faster and easier to manage, espe
 
 </details>
 
-## Summary Statistics for Numbers (Quick Overview)
+## 1.8 Summary Statistics for Numbers (Quick Overview)
 ```python
 # 1. Look at the summary statistics for all numeric columns
 df.describe()
@@ -330,6 +410,78 @@ If your `"Age"` column is still being read as text/strings, `df.describe()` will
 Always run `pd.to_numeric()` first!
 
 </details>
+
+## 1.9 Finding and Dropping Duplicate Rows
+
+```python
+# 1. Count how many completely identical duplicate rows exist
+print("Number of duplicate rows:", df.duplicated().sum())
+
+# 2. Remove the duplicate rows and keep only the first occurrence
+df = df.drop_duplicates()
+
+# 3. Verify the new shape of the table
+print("Table size after removing duplicates:", df.shape)
+```
+<details>
+<summary>📘 What this does</summary>
+
+`df.duplicated().sum()` scans the whole table, looks for rows where every single column matches another row perfectly, and counts them.
+
+`df.drop_duplicates()` deletes the duplicate rows and leaves you with unique records.
+
+</details>
+
+<details>
+<summary>💡 Tip</summary>
+
+If you only want to look for duplicates based on a specific column (like checking if a `Sample_ID` was reused accidentally), you can add a `subset` argument.
+```python
+df.duplicated(subset=["Sample_ID"]).sum()
+```
+</details>
+
+## 1.10 Advanced Category Standardization (Mapping Clean Labels)
+As you discovered, human data entry can result in many different ways to spell the same category (e.g., "Male ", "M", "male", "Male"). Instead of writing multiple separate lines of code, we can clean up everything at once using a single, unified mapping dictionary.
+```python
+# 1. See what messy categories exist right now
+print("Before cleaning:", df["Sex"].unique())
+
+# 2. Use ONE clean dictionary to catch all variations at the same time
+clean_map = {
+    "Male ": "Male", "M": "Male", "male": "Male",
+    "Female ": "Female", "F": "Female", "female": "Female"
+}
+
+# 3. Apply the dictionary to standardise the column
+df["Sex"] = df["Sex"].replace(clean_map)
+
+# 4. Verify that it worked perfectly
+print("After cleaning:", df["Sex"].unique())
+```
+<details>
+<summary>📘 What this does</summary>
+
+`clean_map = {...}` creates a clear translation guide.  
+The messy text on the left (**key**) gets transformed into the clean text on the right (**value**).
+
+`df["Sex"].replace(clean_map)` makes Pandas look at every single cell in the column.  
+If a cell matches any key in your translation guide, it immediately switches it to your clean standard name.
+
+</details>
+
+<details>
+<summary>❌ Common mistakes beginners make</summary>
+
+Accidentally overwriting correct data:  
+If you miss a category or misspell your destination label (for example, typing `"Mlae"` instead of `"Male"`), Python will save your mistake into the whole dataset.
+
+Always run `.unique()` before and after to verify the changes.
+
+</details>
+
+
+
 ## 1.7 Filtering Rows (Finding Specific Patients)
 
 ```python

@@ -1683,6 +1683,124 @@ plt.show()
 
 ---
 
+
+## 7. DISTRIBUTION OF DURATION OF STAY (Histogram with histplot)
+```python
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# 1. Create a histogram to look at the continuous spread of time stayed
+sns.histplot(data=df, x="MonthsStay", bins=15, kde=True, color="teal")
+
+# 2. Add structural chart text
+plt.title("Distribution of Patient Stay Durations")
+plt.xlabel("Number of Months Stayed")
+plt.ylabel("Frequency (Patient Counts)")
+
+plt.show()
+```
+
+<details>
+<summary>📊 Histogram Parameters — What They Do</summary>
+
+## 📘 What this does
+
+### `sns.histplot(..., x="MonthsStay")`
+
+Breaks continuous numeric values into small sequential segments (**bins**) to visualize the distribution of the data.
+
+This helps show where values are concentrated across the range.
+
+---
+
+### `bins=15`
+
+Divides the horizontal axis into exactly `15` intervals (bins).
+
+Each bin counts how many observations fall inside that numeric range.
+
+---
+
+### `kde=True`
+
+Adds a smooth **Kernel Density Estimate (KDE)** curve on top of the histogram.
+
+This line helps visualize the overall mathematical trend and shape of the distribution.
+
+---
+
+## ❌ Common mistakes beginners make
+
+- Choosing an extreme number of bins (for example, `bins=1` or `bins=100`), which can either:
+  - Over-compress the data into meaningless blocks
+  - Or create a jagged and sparse-looking plot
+
+- Trying to use categorical text columns inside a histogram designed for numerical data
+
+---
+
+## 💡 Tip
+
+Histograms are highly effective for visualizing numerical variables that have clear minimum and maximum boundaries, such as:
+
+- Length of stay
+- Patient age
+- Read counts
+- Coverage depth
+- Viral load measurements
+
+For example, `MonthsStay` ranging from `4` to `129` months is ideal for histogram visualization.
+
+</details>
+
+
+# 9. AGE VS TB OUTCOME (Box Plot Style)
+
+<details>
+<summary>📊 Box Plot — What It Does</summary>
+
+## 📘 What this does
+
+### `sns.boxplot(...)`
+
+Compares a continuous numeric variable (such as `Age`) against a categorical grouping variable (such as `CultureResult`).
+
+The box plot visually summarizes the distribution of values inside each category.
+
+It automatically displays:
+
+- The **median** (center horizontal line)
+- The **lower quartile (25%)**
+- The **upper quartile (75%)**
+- The spread of the data
+- Potential **outliers** (unusually distant values)
+
+---
+
+## ❌ Common mistakes beginners make
+
+- Accidentally swapping the `x` and `y` axes, which can make the chart harder to interpret for beginners
+
+- Assuming the center line represents the mathematical **mean**, when it actually represents the **median**
+
+---
+
+## 💡 Tip
+
+Box plots are extremely useful for comparing how numerical variables differ between groups.
+
+For example, they can clearly show whether a particular infection category tends to affect:
+
+- Older patients
+- Younger patients
+- Or populations with wider variability in age
+
+They often communicate group differences much more effectively than simple line plots.
+
+</details>
+
+
+
 # 📊 8. SMOKING vs CULTURE RESULT
 
 ```python

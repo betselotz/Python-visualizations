@@ -48,8 +48,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-from Bio import Phylo
-from sklearn.metrics import pairwise_distances
 ```
 
 <details>
@@ -61,9 +59,7 @@ Loads all tools needed for:
 
 - data handling (`pandas`)  
 - visualization (`matplotlib`, `seaborn`)  
-- SNP analysis (`scikit-learn`)  
-- phylogenetic trees (`Biopython`)  
-
+s
 ---
 
 ## 💡 Tip: 

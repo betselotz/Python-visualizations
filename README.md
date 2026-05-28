@@ -18,7 +18,7 @@ All work is done in Jupyter Notebooks only.
 # 📦 STEP 1 — Install and Import Libraries
 
 ```python
-pip install pandas matplotlib seaborn biopython scikit-learn
+!pip install pandas matplotlib seaborn biopython scikit-learn
 ```
 
 <details>

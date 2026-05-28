@@ -1021,7 +1021,7 @@ plt.show()
 ```
 
 
-# 📊 4. SEX DISTRIBUTION (BAR CHART)
+# 📊 3. SEX DISTRIBUTION (BAR CHART)
 
 ```python
 sns.countplot(data=df, x="Sex")
@@ -1041,7 +1041,7 @@ plt.show()
 
 ---
 
-## ❌ Common mistakes beginners make
+## ❌ Common mistakes 
 
 - Column written as `sex` vs `Sex`  
 - Missing values or inconsistent labels (M, Male, male)  
@@ -1059,9 +1059,9 @@ df["Sex"] = df["Sex"].str.lower()
 
 ---
 
-# 📊 5. REGION DISTRIBUTION
+# 📊 4. REGION DISTRIBUTION
 
-## 📊 5.1. Basic Count Plot with Label Rotation
+## 📊 4.1. Basic Count Plot with Label Rotation
 ```python
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -1094,7 +1094,7 @@ plt.show()
 
 ---
 
-## ❌ Common mistakes beginners make
+## ❌ Common mistakes 
 
 - Misspelled column name (`region` vs `Region`)  
 - Overlapping x-axis labels (forgetting `rotation=45`)  
@@ -1109,7 +1109,7 @@ Use `countplot()` when you want to quickly compare category counts across groups
 
 </details>
 
-## 5.2. Sorting the Bars from Highest to Lowest
+## 4.2. Sorting the Bars from Highest to Lowest
 ```python
 # 1. Find the order of regions from most frequent to least frequent
 highest_to_lowest = df["region"].value_counts().index
@@ -1154,7 +1154,7 @@ Always sort categorical data when order matters — it makes patterns much easie
 
 
 
-## 🗺️ 5.3. The Horizontal Bar Chart (Best for Long Names)
+## 🗺️ 4.3. The Horizontal Bar Chart (Best for Long Names)
 ```python
 # Switch x and y! Put region on the y-axis to lay the bars flat
 sns.countplot(data=df, y="region", palette="Set3")
@@ -1181,7 +1181,7 @@ plt.show()
 
 ---
 
-## ❌ Common mistakes beginners make
+## ❌ Common mistakes 
 
 - Confusing `x` and `y` in Seaborn countplot  
 - Missing column name consistency (`region` vs `Region`)  
@@ -1196,7 +1196,7 @@ Horizontal bar charts are very useful when category names are long or many.
 
 </details>
 
-## 📈 5.4.  The Simplified "Pandas-Only" Way Sorted Pandas Bar Chart Shortcut
+## 📈 4.4.  The Simplified "Pandas-Only" Way Sorted Pandas Bar Chart Shortcut
 ```python
 # 1. Count the regions (Pandas automatically sorts them highest to lowest!)
 region_counts = df["region"].value_counts()
@@ -1229,7 +1229,7 @@ plt.show()
 
 ---
 
-## ❌ Common mistakes beginners make
+## ❌ Common mistakes
 
 - Forgetting that `value_counts()` already sorts data automatically  
 - Confusing Pandas plotting with Seaborn plotting  
@@ -1245,7 +1245,7 @@ Pandas plotting is faster for quick analysis, while Seaborn is better for polish
 
 </details>
 
-## 5.5 If you want both the Count AND the Percentage: Count (Percentage%)
+## 4.5 If you want both the Count AND the Percentage: Count (Percentage%)
 ```python
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -1287,7 +1287,7 @@ plt.show()
 
 ---
 
-## ❌ Common mistakes beginners make
+## ❌ Common mistakes 
 
 - Forgetting to calculate `total = len(df)` before percentage calculation  
 - Using wrong column name (`region` vs `Region`)  

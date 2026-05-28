@@ -1812,7 +1812,23 @@ They often communicate group differences much more effectively than simple line 
 </details>
 
 
-# 📊 9. SMOKING vs CULTURE RESULT
+# 9. Tracking Trends Over Numeric Fields (Line Graph Grouped Styles)
+```python
+# 1. Group the dataset by age values and tabulate diagnostic outcomes
+age_trends = df.groupby("Age")["CultureResult"].value_counts().unstack().fillna(0)
+
+# 2. Generate a continuous trend visualization
+age_trends.plot(kind="line", marker="o", figsize=(10, 5))
+
+plt.title("TB Lab Positivity Trait Variations Across Age Profiles")
+plt.xlabel("Patient Age (Years)")
+plt.ylabel("Aggregated Case Frequency")
+plt.grid(True, linestyle="--", alpha=0.5)
+
+plt.show()
+```
+
+# 📊 10. SMOKING vs CULTURE RESULT
 
 ```python
 sns.countplot(data=df, x="Smoking", hue="CultureResult")
@@ -1849,7 +1865,7 @@ df["Smoking"] = df["Smoking"].str.lower()
 
 ---
 
-# 10. AGE vs CULTURE RESULT (LINE GRAPH STYLE)
+# 11. AGE vs CULTURE RESULT (LINE GRAPH STYLE)
 
 ```python
 df.groupby("Age")["CultureResult"].value_counts().unstack().plot()
@@ -1883,7 +1899,7 @@ Sort age if graph looks messy.
 
 ---
 
-# 🌍 11. ORIGIN (ComeFrom) ANALYSIS
+# 🌍 12. ORIGIN (ComeFrom) ANALYSIS
 
 ```python
 df["ComeFrom"].value_counts().plot.bar()

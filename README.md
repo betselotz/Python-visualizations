@@ -1305,7 +1305,7 @@ Adding percentages makes bar charts more informative and publication-ready, espe
 
 ---
 
-# 🥧 6. CULTURE RESULT (PIE CHART)
+# 🥧 5. CULTURE RESULT (PIE CHART)
 ## Option A: The Enhanced Pie Chart (Custom Colors & Edge Borders)
 This option upgrades the standard pie chart by adding custom colors and distinct borders between slices, which makes it much easier to read.
 
@@ -1490,7 +1490,7 @@ Using a legend instead of slice labels makes pie charts **much cleaner and publi
 </details>
 ---
 
-# 7 REGION vs CULTURE RESULT (HEATMAP OPTIONS)
+# 6 REGION vs CULTURE RESULT (HEATMAP OPTIONS)
 Option A: Percentages by Region (Row-Wise Proportions)If one region has 100 patients and another has only 5, comparing raw numbers can be misleading. This code converts the data into percentages along each row ($100\%$ per region) so you can compare ratios fairly.
 
 ```python
@@ -1554,8 +1554,7 @@ Heatmaps are excellent for spotting **patterns and trends across groups**, espec
 
 </details>
 
-
-🔠 Option B: Sorted Raw Counts (Highest to Lowest Concentration)
+## 🔠 Option B: Sorted Raw Counts (Highest to Lowest Concentration)
 By default, the heatmap lists categories alphabetically. This option sorts the regions based on total volume, placing the busiest regions at the very top of your matrix grid.
 
 ```python

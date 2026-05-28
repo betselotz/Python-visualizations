@@ -212,7 +212,234 @@ Confusing `len(df)` with `df.size`.
 </details>
 
 
-## 1.3. Remove Hidden Blank Spaces
+## 1.3  Viewing Only Specific Columns
+```python
+# 1. Choose a few specific columns to look at
+mini_df = df[["Age", "Sex", "region"]]
+
+# 2. Preview the new smaller table
+mini_df.head()
+```
+<details>
+
+<summary>📋 Selecting Specific Columns — What this does</summary>
+
+## 📘 What this does
+
+- `df[["Age", "Sex", "region"]]` → selects only the specified columns from the full dataset  
+- `mini_df = ...` → creates a new smaller DataFrame containing only those columns  
+- `mini_df.head()` → displays the first 5 rows of the reduced dataset for preview  
+
+This is useful when you want to focus only on important variables and simplify your analysis.
+
+---
+
+## ❌ Common mistakes
+
+- Forgetting double brackets `[[ ]]` when selecting multiple columns  
+- Misspelling column names (`region` vs `Region`)  
+- Expecting the original dataset (`df`) to change (it does not)  
+- Trying to select columns that do not exist in the dataset  
+
+---
+
+## 💡 Tip
+
+Creating a smaller dataset helps make analysis faster and easier to manage, especially with large clinical data.
+
+</details>
+
+
+## 1.4 Filtering Rows (Finding Specific Patients)
+
+```python
+# 1. Filter out and view only patients who are older than 30 years old
+older_patients = df[df["Age"] > 30]
+
+# 2. Check how many patients matched this condition (Rows, Columns)
+print(older_patients.shape)
+```
+<details>
+
+<summary>🔎 Filtering Data — Patients Older Than 30</summary>
+
+## 📘 What this does
+
+- `df[df["Age"] > 30]` → filters the dataset to include only patients whose age is greater than 30  
+- `older_patients = ...` → stores the filtered dataset in a new variable  
+- `older_patients.shape` → shows how many rows (patients) and columns are in the filtered dataset  
+- `print(...)` → displays the result in the notebook or terminal  
+
+This helps you focus on a specific subgroup of patients for analysis.
+
+---
+
+## ❌ Common mistakes
+
+- Forgetting to ensure `Age` is numeric before filtering  
+- Using incorrect comparison operators (`=` instead of `>`)  
+- Thinking the original dataset (`df`) is modified (it is not)  
+- Missing parentheses or incorrect column names (`age` vs `Age`)  
+
+---
+
+## 💡 Tip
+
+Filtering is one of the most powerful tools in data analysis—always double-check your conditions before applying them.
+
+</details>
+
+## 1.5 Finding and Dropping Duplicate Rows
+
+```python
+# 1. Count how many completely identical duplicate rows exist
+print("Number of duplicate rows:", df.duplicated().sum())
+
+# 2. Remove the duplicate rows and keep only the first occurrence
+df = df.drop_duplicates()
+
+# 3. Verify the new shape of the table
+print("Table size after removing duplicates:", df.shape)
+```
+<details>
+<summary>📘 What this does</summary>
+
+`df.duplicated().sum()` scans the whole table, looks for rows where every single column matches another row perfectly, and counts them.
+
+`df.drop_duplicates()` deletes the duplicate rows and leaves you with unique records.
+
+</details>
+
+<details>
+<summary>💡 Tip</summary>
+
+If you only want to look for duplicates based on a specific column (like checking if a `Sample_ID` was reused accidentally), you can add a `subset` argument.
+```python
+df.duplicated(subset=["Sample_ID"]).sum()
+```
+</details>
+
+## 1.6. Count Missing (Empty) Cells
+
+```python
+# 1. Count how many empty/blank cells are in each column
+print(df.isnull().sum())
+```
+<details>
+
+<summary>🧹 Missing Values Check — What this does</summary>
+
+## 📘 What this does
+
+- `df.isnull()` → checks every cell in the dataset to see whether it is empty (NaN) or not  
+- `.sum()` → counts how many missing values exist in each column  
+- `print(...)` → displays the results clearly in the notebook or terminal  
+
+This helps identify columns that may need cleaning before analysis or visualization.
+
+---
+
+## ❌ Common mistakes 
+
+- Assuming datasets are complete without checking for missing values  
+- Confusing empty strings (`""`) with true missing values (`NaN`)  
+- Ignoring missing data before plotting or statistical analysis  
+- Forgetting that missing values can break some calculations and visualizations  
+
+---
+
+## 💡 Tip
+
+Always check for missing values early in your workflow before performing analysis.
+
+</details>
+
+### more codes 
+View Rows with Missing Values `(df.isna())`
+Counting missing cells with `.sum()` tells you how many exist, but sometimes scientists need to look at the exact rows where data is missing to understand why it wasn't recorded.
+
+```python
+# 1. Filter out and view only the rows where the 'zone' column is missing/empty
+missing_zones = df[df["zone"].isna()]
+
+# 2. Display the rows with missing data
+missing_zones
+```
+<details>
+<summary>📘 What this does</summary>
+
+`df["zone"].isna()` scans every cell in the `zone` column and flags it as `True` if it is empty (NaN) and `False` if it has data.
+
+`df[...]` then uses those Boolean flags like a filter window, showing only the rows where the condition is `True`—in this case, rows where the `zone` value is missing.
+
+</details>
+
+Safely Drop Rows with Missing Data `(df.dropna())`
+If critical clinical data (like `CultureResult`) is missing for a sample, you might not be able to use it in your analysis. You can drop rows with empty cells, but you must teach students how to do it safely so they don't erase their entire spreadsheet.
+
+```python
+# 1. Safely remove rows ONLY if they are missing critical data in 'CultureResult'
+df_cleaned = df.dropna(subset=["CultureResult"])
+
+# 2. Compare the old size vs new size to see how many rows were dropped
+print("Original size:", df.shape)
+print("Size after dropping missing values:", df_cleaned.shape)
+```
+
+<details>
+<summary>📘 What this does</summary>
+
+`df.dropna(subset=["CultureResult"])` removes rows only if the missing value is inside the specified column(s).
+
+This means it specifically checks `CultureResult`, and only deletes rows where that column is empty, while keeping rows that may have missing data in other columns.
+
+<summary>❌ Common mistakes </summary>
+
+Running `df.dropna()` without a `subset`:
+
+If a beginner just types `df.dropna()`, Pandas deletes an entire row if even one single cell in any column is empty.
+
+For example, if a patient is only missing a zone name, a plain `dropna()` can remove all their other valuable clinical data.
+
+Using `subset=["CultureResult"]` makes the cleaning much safer and more controlled.
+
+</details>
+
+
+## 1.7 Handling Empty/Missing Cells (fillna)
+
+```python
+# 1. Check how many missing values are in the 'zone' column
+print("Missing before:", df["zone"].isnull().sum())
+
+# 2. Fill empty 'zone' cells with the text "Unknown" so the table is complete
+df["zone"] = df["zone"].fillna("Unknown")
+
+# 3. Double check to ensure 0 missing values remain in that column
+print("Missing after:", df["zone"].isnull().sum())
+```
+
+<details>
+<summary>📘 What this does</summary>
+
+`.fillna("Unknown")` looks at every cell containing `NaN` (Not a Number / empty) within that specific column and replaces it with the word `"Unknown"`.
+
+This prevents errors when downstream scripts expect every cell to contain text.
+
+<summary>❌ Common mistakes beginners make</summary>
+
+Dropping everything by accident:
+
+Beginners often use `df.dropna()`, which deletes the entire row if even one single cell is empty.
+
+For example, if a patient is missing just a zone name, using `dropna()` throws away all their other valuable data.
+
+- Filling missing cells with `"Unknown"` or `"Missing"` is usually much safer.
+
+</details>
+
+
+## 1.8 Remove Hidden Blank Spaces
 ```python
 # 1. Clean the column names (remove hidden spaces at the start/end)
 df.columns = df.columns.str.strip()
@@ -309,128 +536,8 @@ Using `.map()` on an individual column vs. the whole table:
 
 </details>
 
-## 1.4. Count Missing (Empty) Cells
 
-```python
-# 1. Count how many empty/blank cells are in each column
-print(df.isnull().sum())
-```
-<details>
-
-<summary>🧹 Missing Values Check — What this does</summary>
-
-## 📘 What this does
-
-- `df.isnull()` → checks every cell in the dataset to see whether it is empty (NaN) or not  
-- `.sum()` → counts how many missing values exist in each column  
-- `print(...)` → displays the results clearly in the notebook or terminal  
-
-This helps identify columns that may need cleaning before analysis or visualization.
-
----
-
-## ❌ Common mistakes 
-
-- Assuming datasets are complete without checking for missing values  
-- Confusing empty strings (`""`) with true missing values (`NaN`)  
-- Ignoring missing data before plotting or statistical analysis  
-- Forgetting that missing values can break some calculations and visualizations  
-
----
-
-## 💡 Tip
-
-Always check for missing values early in your workflow before performing analysis.
-
-</details>
-
-### more codes 
-View Rows with Missing Values `(df.isna())`
-Counting missing cells with `.sum()` tells you how many exist, but sometimes scientists need to look at the exact rows where data is missing to understand why it wasn't recorded.
-
-```python
-# 1. Filter out and view only the rows where the 'zone' column is missing/empty
-missing_zones = df[df["zone"].isna()]
-
-# 2. Display the rows with missing data
-missing_zones
-```
-<details>
-<summary>📘 What this does</summary>
-
-`df["zone"].isna()` scans every cell in the `zone` column and flags it as `True` if it is empty (NaN) and `False` if it has data.
-
-`df[...]` then uses those Boolean flags like a filter window, showing only the rows where the condition is `True`—in this case, rows where the `zone` value is missing.
-
-</details>
-
-Safely Drop Rows with Missing Data `(df.dropna())`
-If critical clinical data (like `CultureResult`) is missing for a sample, you might not be able to use it in your analysis. You can drop rows with empty cells, but you must teach students how to do it safely so they don't erase their entire spreadsheet.
-
-```python
-# 1. Safely remove rows ONLY if they are missing critical data in 'CultureResult'
-df_cleaned = df.dropna(subset=["CultureResult"])
-
-# 2. Compare the old size vs new size to see how many rows were dropped
-print("Original size:", df.shape)
-print("Size after dropping missing values:", df_cleaned.shape)
-```
-
-<details>
-<summary>📘 What this does</summary>
-
-`df.dropna(subset=["CultureResult"])` removes rows only if the missing value is inside the specified column(s).
-
-This means it specifically checks `CultureResult`, and only deletes rows where that column is empty, while keeping rows that may have missing data in other columns.
-
-<summary>❌ Common mistakes </summary>
-
-Running `df.dropna()` without a `subset`:
-
-If a beginner just types `df.dropna()`, Pandas deletes an entire row if even one single cell in any column is empty.
-
-For example, if a patient is only missing a zone name, a plain `dropna()` can remove all their other valuable clinical data.
-
-Using `subset=["CultureResult"]` makes the cleaning much safer and more controlled.
-
-</details>
-
-
-## 1.5 Handling Empty/Missing Cells (fillna)
-
-```python
-# 1. Check how many missing values are in the 'zone' column
-print("Missing before:", df["zone"].isnull().sum())
-
-# 2. Fill empty 'zone' cells with the text "Unknown" so the table is complete
-df["zone"] = df["zone"].fillna("Unknown")
-
-# 3. Double check to ensure 0 missing values remain in that column
-print("Missing after:", df["zone"].isnull().sum())
-```
-
-<details>
-<summary>📘 What this does</summary>
-
-`.fillna("Unknown")` looks at every cell containing `NaN` (Not a Number / empty) within that specific column and replaces it with the word `"Unknown"`.
-
-This prevents errors when downstream scripts expect every cell to contain text.
-
-<summary>❌ Common mistakes beginners make</summary>
-
-Dropping everything by accident:
-
-Beginners often use `df.dropna()`, which deletes the entire row if even one single cell is empty.
-
-For example, if a patient is missing just a zone name, using `dropna()` throws away all their other valuable data.
-
-- Filling missing cells with `"Unknown"` or `"Missing"` is usually much safer.
-
-</details>
-
-
-
-## 1.6 Count How Many Times Each Category Appears
+## 1.9 Count How Many Times Each Category Appears
 ```python
 # 1. Count how many patients come from each region
 print(df["region"].value_counts())
@@ -471,100 +578,6 @@ If you want to see these counts as percentages instead of raw numbers, add norma
 ```python
 df["region"].value_counts(normalize=True) * 100
 ```
-## 1.7  Viewing Only Specific Columns
-```python
-# 1. Choose a few specific columns to look at
-mini_df = df[["Age", "Sex", "region"]]
-
-# 2. Preview the new smaller table
-mini_df.head()
-```
-<details>
-
-<summary>📋 Selecting Specific Columns — What this does</summary>
-
-## 📘 What this does
-
-- `df[["Age", "Sex", "region"]]` → selects only the specified columns from the full dataset  
-- `mini_df = ...` → creates a new smaller DataFrame containing only those columns  
-- `mini_df.head()` → displays the first 5 rows of the reduced dataset for preview  
-
-This is useful when you want to focus only on important variables and simplify your analysis.
-
----
-
-## ❌ Common mistakes
-
-- Forgetting double brackets `[[ ]]` when selecting multiple columns  
-- Misspelling column names (`region` vs `Region`)  
-- Expecting the original dataset (`df`) to change (it does not)  
-- Trying to select columns that do not exist in the dataset  
-
----
-
-## 💡 Tip
-
-Creating a smaller dataset helps make analysis faster and easier to manage, especially with large clinical data.
-
-</details>
-
-## 1.8 Summary Statistics for Numbers (Quick Overview)
-```python
-# 1. Look at the summary statistics for all numeric columns
-df.describe()
-```
-<details>
-<summary>📘 What this does</summary>
-
-`df.describe()` automatically finds all numerical columns and calculates:
-
-- **count**: Total number of non-empty cells.
-- **mean**: The average value.
-- **std**: Standard deviation (how spread out the values are).
-- **min / max**: The lowest and highest values in the dataset.
-- **25%, 50%, 75%**: Percentiles (the 50% mark is your absolute median).
-
-</details>
-
-<details>
-<summary>❌ Common mistakes beginners make</summary>
-
-Running this before converting data types:  
-If your `"Age"` column is still being read as text/strings, `df.describe()` will completely ignore it.
-
-Always run `pd.to_numeric()` first!
-
-</details>
-
-## 1.9 Finding and Dropping Duplicate Rows
-
-```python
-# 1. Count how many completely identical duplicate rows exist
-print("Number of duplicate rows:", df.duplicated().sum())
-
-# 2. Remove the duplicate rows and keep only the first occurrence
-df = df.drop_duplicates()
-
-# 3. Verify the new shape of the table
-print("Table size after removing duplicates:", df.shape)
-```
-<details>
-<summary>📘 What this does</summary>
-
-`df.duplicated().sum()` scans the whole table, looks for rows where every single column matches another row perfectly, and counts them.
-
-`df.drop_duplicates()` deletes the duplicate rows and leaves you with unique records.
-
-</details>
-
-<details>
-<summary>💡 Tip</summary>
-
-If you only want to look for duplicates based on a specific column (like checking if a `Sample_ID` was reused accidentally), you can add a `subset` argument.
-```python
-df.duplicated(subset=["Sample_ID"]).sum()
-```
-</details>
 
 ## 1.10 Advanced Category Standardization (Mapping Clean Labels)
 As you discovered, human data entry can result in many different ways to spell the same category (e.g., "Male ", "M", "male", "Male"). Instead of writing multiple separate lines of code, we can clean up everything at once using a single, unified mapping dictionary.
@@ -605,48 +618,7 @@ Always run `.unique()` before and after to verify the changes.
 
 </details>
 
-
-
-## 1.11 Filtering Rows (Finding Specific Patients)
-
-```python
-# 1. Filter out and view only patients who are older than 30 years old
-older_patients = df[df["Age"] > 30]
-
-# 2. Check how many patients matched this condition (Rows, Columns)
-print(older_patients.shape)
-```
-<details>
-
-<summary>🔎 Filtering Data — Patients Older Than 30</summary>
-
-## 📘 What this does
-
-- `df[df["Age"] > 30]` → filters the dataset to include only patients whose age is greater than 30  
-- `older_patients = ...` → stores the filtered dataset in a new variable  
-- `older_patients.shape` → shows how many rows (patients) and columns are in the filtered dataset  
-- `print(...)` → displays the result in the notebook or terminal  
-
-This helps you focus on a specific subgroup of patients for analysis.
-
----
-
-## ❌ Common mistakes
-
-- Forgetting to ensure `Age` is numeric before filtering  
-- Using incorrect comparison operators (`=` instead of `>`)  
-- Thinking the original dataset (`df`) is modified (it is not)  
-- Missing parentheses or incorrect column names (`age` vs `Age`)  
-
----
-
-## 💡 Tip
-
-Filtering is one of the most powerful tools in data analysis—always double-check your conditions before applying them.
-
-</details>
-
-## 1.12. Convert Age Into Numbers
+## 1.11. Convert Age Into Numbers
 
 ```python
 # 1. Force the 'Age' column to be read as math numbers
@@ -683,7 +655,7 @@ df["Age"].dtype
 before doing statistical analysis.
 </details>
 
-## 1.13. Renaming Columns for Cleanliness
+## 1.12. Renaming Columns for Cleanliness
 ```python
 # 1. Fix capitalization and remove question marks from column headers
 df = df.rename(columns={"region": "Region", "ChewKhat?": "ChewKhat"})
@@ -724,8 +696,35 @@ This helps standardize column names so analysis and plotting work correctly.
 Always print `df.columns` after renaming to confirm everything was updated correctly.
 
 </details>
+## 1.4 Summary Statistics for Numbers (Quick Overview)
+```python
+# 1. Look at the summary statistics for all numeric columns
+df.describe()
+```
+<details>
+<summary>📘 What this does</summary>
 
-## 1.14. List Unique Categories
+`df.describe()` automatically finds all numerical columns and calculates:
+
+- **count**: Total number of non-empty cells.
+- **mean**: The average value.
+- **std**: Standard deviation (how spread out the values are).
+- **min / max**: The lowest and highest values in the dataset.
+- **25%, 50%, 75%**: Percentiles (the 50% mark is your absolute median).
+
+</details>
+
+<details>
+<summary>❌ Common mistakes beginners make</summary>
+
+Running this before converting data types:  
+If your `"Age"` column is still being read as text/strings, `df.describe()` will completely ignore it.
+
+Always run `pd.to_numeric()` first!
+
+</details>
+
+## 1.13. List Unique Categories
 ```python
 # 1. See all unique categories inside the 'Sex' column
 print(df["Sex"].unique())
